@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:BluetoothSampleApp.Converters"
+             mc:Ignorable="d"
+             x:Name="MainPageViewModel"
+             x:Class="BluetoothSampleApp.MainPage">
+
+    <StackLayout Orientation="Vertical">
+        <!-- Place new controls here -->
+        <!--<Label Text="Welcome to Xamarin.Forms!" 
+           HorizontalOptions="Center"
+           VerticalOptions="CenterAndExpand" />-->
+
+        <StackLayout Orientation="Horizontal" Margin="0,50,0,0">
+            <Button x:Name="SearchButton" Text="Discover" IsEnabled="{Binding IsSearching, Converter={converters:InverseBoolConverter}}" Command="{Binding Search}"></Button>
+            <Button x:Name="StopSearchButton" Text="Stop" IsEnabled="{Binding IsSearching}" Command="{Binding Stop}"></Button>
+        </StackLayout>
+
+        <ListView x:Name="DeviceList"
+                  SelectionMode="Single"
+                  ItemsSource="{Binding Devices}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.View>
+                            <StackLayout Orientation="Horizontal" Padding="10">
+                                <Label Text="{Binding Name, Converter={converters:NoNameConverter}}" />
+                                <Button Text="Connect"
+                                        Command="{Binding Path=BindingContext.ReadFromDeviceCommand, Source={x:Reference MainPageViewModel}}"
+                                        CommandParameter="{Binding}" />
+                            </StackLayout>
+                        </ViewCell.View>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+
+</ContentPage>
